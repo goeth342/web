@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesoría Sánchez - Servicios Consulares Profesionales</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+        1. CONFIGURACIÓN INICIAL Y VARIABLES CSS (ROOT)
+        ==========================================================================
+        Se definen las propiedades personalizadas para un theming consistente y 
+        fácil de mantener. Esto permite cambiar un color o una sombra en un 
+        solo lugar y que se aplique en todo el sitio.
+        */
+        :root {
+            --primary-blue: #4A6FA5;
+            --secondary-blue: #2E5CCD;
+            --accent-red: #D32F2F;
+            --dark-gray: #1a202c;
+            --light-gray: #f7fafc;
+            --white: #ffffff;
+            --success-green: #25D366;
+            --font-family-base: 'Poppins', sans-serif;
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --border-radius: 12px;
+            --header-height: 75px;
+        }
+
+        /* ==========================================================================
+        2. RESETEO Y ESTILOS BASE
+        ==========================================================================
+        Estilos globales para normalizar el comportamiento del navegador y 
+        establecer una base sólida.
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height); /* Evita que el header tape el contenido al navegar */
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: 1.7;
+            color: var(--dark-gray);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ==========================================================================
+        3. HEADER Y NAVEGACIÓN
+        ==========================================================================
+        Uso de Flexbox para alinear los elementos. El header es fijo (`sticky`)
+        para una mejor experiencia de usuario. La navegación móvil se transforma
+        con una transición suave.
+        */
+        .header {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .logo-icon-circle {
+            background: var(--white);
+            color: var(--primary-blue);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: grid; /* Centrado perfecto con grid */
+            place-content: center;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover .logo-icon-circle {
+            transform: rotate(360deg);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active { /* El estado .active es controlado por JS (Scrollspy) */
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .mobile-menu-btn { display: none; }
+
+        /* ==========================================================================
+        4. SECCIÓN HERO Y BOTONES PRINCIPALES
+        ==========================================================================
+        Uso de `clamp()` para tipografía fluida y `vh` para ocupar toda la
+        altura de la pantalla. El overlay mejora la legibilidad del texto.
+        */
+        .hero {
+            min-height: calc(100vh - var(--header-height));
+            display: grid; /* Usando grid para centrar contenido fácilmente */
+            place-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 40px 20px;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=2044&q=80') center/cover no-repeat fixed;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: 0 6px 20px rgba(74, 111, 165, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(74, 111, 165, 0.6);
+        }
+
+        .btn-contact {
+            background: var(--accent-red);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+        }
+        .btn-contact:hover {
+            background: #B71C1C;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.5);
+        }
+        
+        /* ==========================================================================
+        5. ESTILOS DE SECCIONES GENERALES
+        ==========================================================================
+        Estilos consistentes para todas las secciones de la página.
+        */
+        .section {
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 700;
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 4px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+        }
+        
+        .bg-light { background-color: var(--light-gray); }
+
+        /* ==========================================================================
+        6. COMPONENTES ESPECÍFICOS (SOBRE NOSOTROS, SERVICIOS, CONTACTO)
+        ==========================================================================
+        Uso de CSS Grid para layouts complejos como la sección "Sobre Nosotros" 
+        y la parrilla de servicios, permitiendo un diseño responsive robusto.
+        */
+        /* Quiénes somos */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            text-align: left;
+        }
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Servicios */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-medium);
+        }
+        .service-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        .service-content {
+            padding: 30px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .service-content h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .service-list {
+            list-style: none;
+            margin-bottom: 25px;
+            text-align: left;
+            color: #4a5568;
+        }
+        .service-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+        }
+        .service-list li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary-blue);
+        }
+        .service-content .btn { margin-top: auto; }
+
+        /* Contacto y Formulario */
+        .contact-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+            text-align: left;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: var(--font-family-base);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+        
+        /* Mapas */
+        .map-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .map-item h3 { margin-bottom: 15px; font-size: 1.5rem; color: var(--primary-blue); }
+        .map-item iframe {
+            width: 100%;
+            height: 350px;
+            border: 0;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* ==========================================================================
+        7. FOOTER Y ELEMENTOS FLOTANTES
+        ==========================================================================
+        */
+        .footer {
+            background: var(--dark-gray);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+        }
+        .footer p { margin-bottom: 8px; }
+
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--success-green);
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: grid;
+            place-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+
+        /* ==========================================================================
+        8. ANIMACIONES Y EFECTOS VISUALES
+        ==========================================================================
+        Animación de banderas y animaciones de scroll-reveal.
+        El uso de `will-change` y `transform` optimiza el rendimiento para que 
+        la GPU maneje las animaciones, liberando a la CPU.
+        */
+        /* Animación de Banderas que Caen (Optimizada) */
+        .falling-flags {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0.2;
+        }
+        .flag {
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            background-size: cover;
+            background-position: center;
+            will-change: transform, opacity; /* Optimización de performance */
+            animation: fall linear infinite;
+        }
+        .flag.usa { background-image: url('https://i.imgur.com/G35L8tY.png'); }
+        .flag.mexico { background-image: url('https://i.imgur.com/7123j15.png'); }
+        
+        @keyframes fall {
+            from {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Animaciones de Scroll (Aparecer al ser visible) */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+        9. DISEÑO RESPONSIVE (MEDIA QUERIES)
+        ==========================================================================
+        Ajustes para tabletas y móviles. Se prioriza el enfoque "mobile-first"
+        implícitamente, con los estilos base sirviendo para móviles y las
+        media queries añadiendo complejidad para pantallas más grandes.
+        */
+        @media (max-width: 992px) {
+            .about-content { grid-template-columns: 1fr; }
+            .about-image { order: -1; margin-bottom: 30px; }
+            .about-text { text-align: center; }
+            .map-container { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .logo-text { display: none; }
+            
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--secondary-blue);
+                flex-direction: column;
+                text-align: center;
+                gap: 0;
+                /* Transición para el menú desplegable */
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            .nav-menu.active {
+                max-height: 500px; /* Suficiente para todos los items */
+            }
+            .nav-menu li {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .nav-menu a {
+                display: block;
+                padding: 15px;
+                border-radius: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--white);
+                font-size: 24px;
+                cursor: pointer;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="falling-flags" id="fallingFlags" aria-hidden="true"></div>
+
+    <header class="header">
+        <div class="container header-content">
+            <a href="#inicio" class="logo" aria-label="Asesoría Sánchez - Volver al inicio">
+                <div class="logo-icon-circle"><i class="fas fa-globe-americas"></i></div>
+                <span class="logo-text">ASESORÍA SÁNCHEZ</span>
+            </a>
+            <nav aria-label="Navegación principal">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#inicio">INICIO</a></li>
+                    <li><a href="#quienes-somos">¿QUIÉNES SOMOS?</a></li>
+                    <li><a href="#servicios">NUESTROS SERVICIOS</a></li>
+                    <li><a href="#contacto" class="btn btn-contact">CONTACTO</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero">
+            <div class="hero-content animate-on-scroll">
+                <h1>Obtén tu visa, simple y rápido</h1>
+                <p>Haz realidad tu viaje, obtén tu visa de manera rápida y sencilla con nuestros expertos consultores.</p>
+                <a href="#contacto" class="btn btn-primary">CONTÁCTANOS</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container animate-on-scroll">
+                <h2 class="section-title">¿Por qué nosotros?</h2>
+                <p style="max-width: 900px; margin: 0 auto;">En Asesoría Sánchez, nos enorgullece ofrecer un servicio de asesoría de visas confiable y eficiente. Contamos con un equipo de expertos en visas que están altamente capacitados para ayudarte a obtener tu visa de forma rápida y sencilla. Además, estamos comprometidos con brindarte una atención al cliente excepcional y costos accesibles.</p>
+            </div>
+        </section>
+
+        <section id="quienes-somos" class="section bg-light">
+            <div class="container about-content">
+                <div class="about-image animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Retrato de un miembro del equipo profesional" loading="lazy">
+                </div>
+                <div class="about-text animate-on-scroll">
+                    <h2>¿Quiénes somos?</h2>
+                    <p>En Asesoría Sánchez, nos enorgullece ofrecer servicios de calidad y apoyo a nuestros clientes en cada paso del proceso de solicitud de visa. Nuestra misión es hacer que el proceso de obtención de visas sea lo más simple y sin complicaciones posible para nuestros clientes.</p>
+                    <p>Nos dedicamos a trabajar arduamente para asegurarnos de que nuestros clientes obtengan la visa que necesitan para cumplir sus objetivos personales y profesionales.</p>
+                    <a href="#contacto" class="btn btn-primary">CONTÁCTANOS</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicios" class="section">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Nuestros Servicios</h2>
+                <div class="services-grid">
+                    <div class="service-card animate-on-scroll">
+                        <div class="service-image" style="background-image: url('https://static-uat.cambiocolombia.com/s3fs-public/2022-11/visas-americana.jpg');"></div>
+                        <div class="service-content">
+                            <h3>Trámites de Visa</h3>
+                            <ul class="service-list">
+                                <li>Visa de Turismo y Negocios (B1/B2)</li>
+                                <li>Visa de Trabajo (H, L, O, TN)</li>
+                                <li>Visa de Estudiante (F-1, M-1)</li>
+                                <li>Visa de Prometido(a) (K-1)</li>
+                                <li>y más...</li>
+                            </ul>
+                            <a href="#contacto" class="btn btn-contact">ME INTERESA</a>
+                        </div>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <div class="service-image" style="background-image: url('https://tse4.mm.bing.net/th/id/OIP.snqTSOcSk-gSKJAHI5BFUgHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');"></div>
+                        <div class="service-content">
+                            <h3>Trámites de Pasaporte</h3>
+                            <ul class="service-list">
+                                <li>Pasaporte Mexicano - Primera vez/Renovación</li>
+                                <li>Pasaporte Americano - Primera vez/Renovación</li>
+                                <li>Pasaporte para menores de edad</li>
+                                <li>Corrección de datos</li>
+                            </ul>
+                            <a href="#contacto" class="btn" style="background:var(--secondary-blue); color:white;">ME INTERESA</a>
+                        </div>
+                    </div>
+                    <div class="service-card animate-on-scroll">
+                        <div class="service-image" style="background-image: url('https://tcadm.com/wp-content/uploads/2020/10/Slider_D-Legal-3.jpg');"></div>
+                        <div class="service-content">
+                            <h3>Otros Trámites</h3>
+                            <ul class="service-list">
+                                <li>Permisos I-94 y Perdones Migratorios</li>
+                                <li>Regularización de Vehículos</li>
+                                <li>Traducción de documentos</li>
+                                <li>Adelanto de citas y más...</li>
+                            </ul>
+                            <a href="#contacto" class="btn btn-contact">ME INTERESA</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Contáctanos</h2>
+                <form class="contact-form animate-on-scroll" id="contact-form" novalidate>
+                    <div class="form-group">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono *</label>
+                        <input type="tel" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servicio">Servicio de Interés</label>
+                        <select id="servicio" name="servicio">
+                            <option value="No especificado">Seleccionar servicio...</option>
+                            <option value="Trámite de visa a EU">Trámite de visa (turista, trabajo, estudio) a EU</option>
+                            <option value="Permiso para Canadá">Permiso electrónico y de estudio para Canadá</option>
+                            <option value="Pasaporte">Pasaporte Americano o Mexicano</option>
+                            <option value="Otro">Otro servicio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" rows="4" placeholder="Describe tu consulta..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">ENVIAR MENSAJE</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Nuestras Oficinas</h2>
+                <div class="map-container">
+                    <div class="map-item animate-on-scroll">
+                        <h3>Sucursal Centro</h3>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.088619379654!2d-97.50285068497047!3d25.86248498375506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866f9aaa64615555%3A0x6a6c4c9b98d1a10!2sMatamoros%2C%20Tamaulipas!5e0!3m2!1sen!2smx!4v1662586722238!5m2!1sen!2smx" 
+                                title="Ubicación de Sucursal Centro" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <div class="map-item animate-on-scroll">
+                        <h3>Sucursal Norte</h3>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3581.088619379654!2d-97.50285068497047!3d25.86248498375506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866f9aaa64615555%3A0x6a6c4c9b98d1a10!2sMatamoros%2C%20Tamaulipas!5e0!3m2!1sen!2smx!4v1662586722238!5m2!1sen!2smx"
+                                title="Ubicación de Sucursal Norte" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Asesoría Sánchez - Todos los derechos reservados</p>
+            <p>Servicios consulares profesionales • Experiencia comprobada</p>
+            <p>Matamoros, Tamaulipas • <strong>+52 868 163 5140</strong></p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5218681635140" target="_blank" class="floating-whatsapp" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+    /*
+    ==============================================================================
+    JAVASCRIPT MODULAR Y OPTIMIZADO
+    ==============================================================================
+    - Se encapsula toda la lógica en un objeto `App` para evitar contaminar
+      el scope global y mejorar la organización.
+    - Se utilizan técnicas avanzadas como `IntersectionObserver` para animaciones
+      eficientes, `debounce` para optimizar eventos de resize y delegación de
+      eventos para mejorar el performance.
+    */
+    const App = {
+        // Almacenamiento de elementos DOM y estado
+        cache: {},
+        config: {
+            WHATSAPP_NUMBER: '5218681635140',
+            NUM_FLAGS: window.innerWidth > 768 ? 20 : 10,
+        },
+
+        // Método principal que inicializa la aplicación
+        init() {
+            this.cacheDOM();
+            this.setupEventListeners();
+            this.initScrollAnimations();
+            this.initScrollspy();
+            this.initFallingFlags();
+        },
+        
+        // Centraliza la selección de elementos del DOM
+        cacheDOM() {
+            this.cache.navMenu = document.getElementById('nav-menu');
+            this.cache.mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            this.cache.contactForm = document.getElementById('contact-form');
+            this.cache.flagsContainer = document.getElementById('fallingFlags');
+            this.cache.navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+            this.cache.sections = document.querySelectorAll('.section');
+            this.cache.animatedElements = document.querySelectorAll('.animate-on-scroll');
+        },
+
+        // Configura todos los listeners de eventos
+        setupEventListeners() {
+            this.cache.mobileMenuBtn.addEventListener('click', this.toggleMobileMenu.bind(this));
+            this.cache.navMenu.addEventListener('click', this.handleNavClick.bind(this));
+            this.cache.contactForm.addEventListener('submit', this.handleFormSubmit.bind(this));
+            window.addEventListener('resize', this.debounce(this.handleResize.bind(this), 250));
+        },
+
+        // Lógica del menú móvil
+        toggleMobileMenu() {
+            const isExpanded = this.cache.navMenu.classList.toggle('active');
+            this.cache.mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+            const icon = this.cache.mobileMenuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars', !isExpanded);
+            icon.classList.toggle('fa-times', isExpanded);
+        },
+
+        // Delegación de eventos para la navegación y cierre del menú
+        handleNavClick(e) {
+            if (e.target.tagName === 'A') {
+                if (this.cache.navMenu.classList.contains('active')) {
+                    this.toggleMobileMenu();
+                }
+            }
+        },
+
+        // Manejo del envío del formulario a WhatsApp
+        handleFormSubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(this.cache.contactForm);
+            const data = Object.fromEntries(formData.entries());
+
+            if (!data.nombre || !data.email || !data.telefono) {
+                alert('Por favor, complete todos los campos requeridos.');
+                return;
+            }
+
+            const message = `¡Hola! Solicito información.\n\n👤 *DATOS:*\n• Nombre: ${data.nombre}\n• Email: ${data.email}\n• Teléfono: ${data.telefono}\n• Servicio: ${data.servicio}\n\n💬 *MENSAJE:*\n${data.mensaje || 'N/A'}`;
+            const whatsappURL = `https://wa.me/${this.config.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappURL, '_blank');
+            this.cache.contactForm.reset();
+        },
+        
+        // Optimización de la animación de banderas (reutilización de DOM)
+        initFallingFlags() {
+            const flagTypes = ['usa', 'mexico'];
+            for (let i = 0; i < this.config.NUM_FLAGS; i++) {
+                const flag = document.createElement('div');
+                const type = flagTypes[i % flagTypes.length];
+                flag.className = `flag ${type}`;
+                this.resetFlag(flag);
+                this.cache.flagsContainer.appendChild(flag);
+            }
+        },
+
+        resetFlag(flag) {
+            flag.style.left = `${Math.random() * 100}vw`;
+            flag.style.top = `-${Math.random() * 100 + 50}px`;
+            flag.style.animationDuration = `${Math.random() * 5 + 8}s`;
+            flag.style.animationDelay = `${Math.random() * 5}s`;
+        },
+
+        // Lógica para animaciones al hacer scroll
+        initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            this.cache.animatedElements.forEach(el => observer.observe(el));
+        },
+        
+        // Lógica de Scrollspy para resaltar el enlace de navegación activo
+        initScrollspy() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.cache.navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            
+            document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+        },
+        
+        handleResize() {
+            const newNumFlags = window.innerWidth > 768 ? 20 : 10;
+            if(newNumFlags !== this.config.NUM_FLAGS) {
+                this.config.NUM_FLAGS = newNumFlags;
+                this.cache.flagsContainer.innerHTML = ''; // Limpiar banderas actuales
+                this.initFallingFlags();
+            }
+        },
+
+        // Utilidad para "debounce" (evita ejecución excesiva de una función)
+        debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+    };
+
+    // Inicia la aplicación cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', () => App.init());
+    </script>
+</body>
+</html>
